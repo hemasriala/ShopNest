@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('About us')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: navbar}"></header>
+<main class="container">
+<div th:replace="~{fragments/layout :: messages}"></div>
+<h1>About ShopNest</h1>
+<div class="panel">
+    <p>ShopNest is a simple online store built to make shopping easy. We bring useful everyday products
+       from stationery to electronics together in one place, at prices that make sense.</p>
+    <p>This project was built as a full stack web application using Spring Boot, Thymeleaf, Spring Data JPA and MySQL.</p>
+</div>
+<div class="features">
+    <div class="panel"><h3>Simple shopping</h3><p class="muted">Browse, add to cart and checkout in a few clicks.</p></div>
+    <div class="panel"><h3>Fair prices</h3><p class="muted">Every product shows its original price and your discount.</p></div>
+    <div class="panel"><h3>Safe accounts</h3><p class="muted">Passwords are stored in encrypted (BCrypt) form.</p></div>
+</div>
+</main>
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>

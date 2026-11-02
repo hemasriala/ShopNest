@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Products')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: navbar}"></header>
+<main class="container">
+<div th:replace="~{fragments/layout :: messages}"></div>
+<h1>Products</h1>
+<form class="search-bar" th:action="@{/products}" method="get">
+    <input type="text" name="q" th:value="${keyword}" placeholder="Search products...">
+    <input type="hidden" name="category" th:value="${selectedCategory}">
+    <button class="btn" type="submit">Search</button>
+</form>
+
+<div class="chips">
+    <a class="chip" th:classappend="${selectedCategory == null or selectedCategory == ''} ? 'active'" th:href="@{/products}">All</a>
+    <a class="chip" th:each="c : ${categories}" th:classappend="${c == selectedCategory} ? 'active'"
+       th:href="@{/products(category=${c})}" th:text="${c}">Category</a>
+</div>
+
+<div class="grid" th:if="${!products.isEmpty()}">
+    <th:block th:each="p : ${products}">
+        <div th:replace="~{fragments/layout :: productCard(${p})}"></div>
+    </th:block>
+</div>
+<div class="empty" th:if="${products.isEmpty()}">
+    <h2>No products found</h2>
+    <p>Try a different search word or <a th:href="@{/products}">view all products</a>.</p>
+</div>
+</main>
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>

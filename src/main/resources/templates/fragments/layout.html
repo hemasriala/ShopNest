@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${title} + ' | ShopNest'">ShopNest</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<header class="navbar" th:fragment="navbar">
+    <div class="nav-inner">
+        <a class="brand" th:href="@{/}">ShopNest</a>
+        <nav class="nav-links">
+            <a th:href="@{/}">Home</a>
+            <a th:href="@{/products}">Products</a>
+            <a th:href="@{/about}">About</a>
+            <a th:href="@{/contact}">Contact</a>
+            <a th:if="${loggedUser != null}" th:href="@{/orders}">My Orders</a>
+        </nav>
+        <div class="nav-right">
+            <a th:href="@{/cart}">Cart <span class="badge" th:text="${cartCount}">0</span></a>
+            <a th:if="${loggedUser != null}" th:href="@{/profile}" th:text="'Hi, ' + ${loggedUser.name}">Hi</a>
+            <a th:if="${loggedUser != null}" th:href="@{/logout}">Logout</a>
+            <a th:if="${loggedUser == null}" th:href="@{/login}">Login</a>
+            <a th:if="${loggedUser == null}" class="btn btn-small" th:href="@{/register}">Sign up</a>
+        </div>
+    </div>
+</header>
+
+<div th:fragment="messages">
+    <div class="alert alert-success" th:if="${success}" th:text="${success}"></div>
+    <div class="alert alert-error" th:if="${error}" th:text="${error}"></div>
+</div>
+
+<div th:fragment="productCard(p)" class="card">
+    <a th:href="@{/products/{id}(id=${p.id})}">
+        <img th:src="${p.imageUrl}" th:alt="${p.name}"
+             onerror="this.onerror=null;this.src='https://placehold.co/500x400?text=No+Image';">
+    </a>
+    <div class="card-body">
+        <span class="card-cat" th:text="${p.category}">Category</span>
+        <a class="card-title" th:href="@{/products/{id}(id=${p.id})}" th:text="${p.name}">Name</a>
+        <div>
+            <span class="price" th:text="${@fmt.rupee(p.price)}">₹0</span>
+            <span class="mrp" th:if="${p.discountPercent > 0}" th:text="${@fmt.rupee(p.mrp)}"></span>
+            <span class="off" th:if="${p.discountPercent > 0}" th:text="${p.discountPercent} + '% off'"></span>
+        </div>
+        <div class="card-actions">
+            <form th:action="@{/cart/add}" method="post" th:if="${p.stock > 0}">
+                <input type="hidden" name="productId" th:value="${p.id}">
+                <button class="btn btn-block" type="submit">Add to cart</button>
+            </form>
+            <span class="out-stock" th:if="${p.stock <= 0}">Out of stock</span>
+        </div>
+    </div>
+</div>
+
+<footer th:fragment="footer">
+    <div class="container footer-inner">
+        <div>&copy; 2026 ShopNest. Made with Spring Boot.</div>
+        <div>
+            <a th:href="@{/products}">Shop</a>
+            <a th:href="@{/about}">About</a>
+            <a th:href="@{/contact}">Contact</a>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>

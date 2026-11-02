@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Home')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: navbar}"></header>
+<main class="container">
+<div th:replace="~{fragments/layout :: messages}"></div>
+<section class="hero">
+    <h1>Everything you need, delivered to your door</h1>
+    <p>Stationery, electronics, fashion and home essentials at friendly prices. Free delivery on orders above ₹499.</p>
+    <a class="btn" th:href="@{/products}">Start shopping</a>
+</section>
+
+<h2>Shop by category</h2>
+<div class="chips">
+    <a class="chip" th:each="c : ${categories}" th:href="@{/products(category=${c})}" th:text="${c}">Category</a>
+</div>
+
+<h2>New arrivals</h2>
+<div class="grid">
+    <th:block th:each="p : ${products}">
+        <div th:replace="~{fragments/layout :: productCard(${p})}"></div>
+    </th:block>
+</div>
+
+<div class="features">
+    <div class="panel"><h3>Free delivery</h3><p class="muted">On every order above ₹499.</p></div>
+    <div class="panel"><h3>Easy cancellation</h3><p class="muted">Cancel an order any time before it ships.</p></div>
+    <div class="panel"><h3>Cash on delivery</h3><p class="muted">Pay when your order arrives, or use UPI.</p></div>
+</div>
+</main>
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>

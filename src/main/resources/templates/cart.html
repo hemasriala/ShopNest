@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('My Cart')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: navbar}"></header>
+<main class="container">
+<div th:replace="~{fragments/layout :: messages}"></div>
+<h1>My cart</h1>
+<div class="empty panel" th:if="${items.isEmpty()}">
+    <h2>Your cart is empty</h2>
+    <p>Looks like you have not added anything yet.</p>
+    <a class="btn" th:href="@{/products}">Browse products</a>
+</div>
+
+<div class="layout-2" th:if="${!items.isEmpty()}">
+    <div class="panel">
+        <table>
+            <tr><th>Product</th><th>Price</th><th>Quantity</th><th>Total</th><th></th></tr>
+            <tr th:each="item : ${items}">
+                <td>
+                    <div class="item-cell">
+                        <img class="thumb" th:src="${item.product.imageUrl}" th:alt="${item.product.name}"
+                             onerror="this.onerror=null;this.src='https://placehold.co/64x64?text=No+Image';">
+                        <a th:href="@{/products/{id}(id=${item.product.id})}" th:text="${item.product.name}">Name</a>
+                    </div>
+                </td>
+                <td th:text="${@fmt.rupee(item.product.price)}">₹0</td>
+                <td>
+                    <form class="inline-form" th:action="@{/cart/update}" method="post">
+                        <input type="hidden" name="itemId" th:value="${item.id}">
+                        <input type="number" name="quantity" th:value="${item.quantity}" min="1" th:max="${item.product.stock}">
+                        <button class="btn btn-outline btn-small" type="submit">Update</button>
+                    </form>
+                </td>
+                <td th:text="${@fmt.rupee(item.lineTotal)}">₹0</td>
+                <td>
+                    <form th:action="@{/cart/remove}" method="post">
+                        <input type="hidden" name="itemId" th:value="${item.id}">
+                        <button class="btn btn-danger btn-small" type="submit">Remove</button>
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="panel">
+        <h3 style="margin-top:0">Order summary</h3>
+        <div class="summary-row"><span>Subtotal</span><span th:text="${@fmt.rupee(subtotal)}">₹0</span></div>
+        <div class="summary-row"><span>Delivery</span>
+            <span th:text="${delivery == 0} ? 'Free' : ${@fmt.rupee(delivery)}">Free</span></div>
+        <p class="muted" th:if="${delivery > 0}" th:text="'Add items worth ' + ${@fmt.rupee(freeAbove - subtotal)} + ' more for free delivery.'"></p>
+        <div class="summary-row summary-total"><span>Total</span><span th:text="${@fmt.rupee(total)}">₹0</span></div>
+        <p><a class="btn btn-block" th:href="@{/checkout}" style="text-align:center">Proceed to checkout</a></p>
+    </div>
+</div>
+</main>
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>

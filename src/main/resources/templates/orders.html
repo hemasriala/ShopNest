@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('My Orders')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: navbar}"></header>
+<main class="container">
+<div th:replace="~{fragments/layout :: messages}"></div>
+<h1>My orders</h1>
+<div class="empty panel" th:if="${orders.isEmpty()}">
+    <h2>No orders yet</h2>
+    <p>When you place an order, it will show up here.</p>
+    <a class="btn" th:href="@{/products}">Start shopping</a>
+</div>
+<div class="panel" th:if="${!orders.isEmpty()}">
+    <table>
+        <tr><th>Order</th><th>Date</th><th>Items</th><th>Total</th><th>Status</th><th></th></tr>
+        <tr th:each="o : ${orders}">
+            <td th:text="'#' + ${o.id}">#1</td>
+            <td th:text="${#temporals.format(o.orderDate, 'dd MMM yyyy, hh:mm a')}">Date</td>
+            <td th:text="${o.items.size()}">1</td>
+            <td th:text="${@fmt.rupee(o.totalAmount)}">₹0</td>
+            <td><span class="status" th:classappend="'status-' + ${o.status}" th:text="${o.status}">PLACED</span></td>
+            <td><a th:href="@{/orders/{id}(id=${o.id})}">View details</a></td>
+        </tr>
+    </table>
+</div>
+</main>
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>

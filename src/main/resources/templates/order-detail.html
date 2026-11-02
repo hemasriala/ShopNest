@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Order Details')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: navbar}"></header>
+<main class="container">
+<div th:replace="~{fragments/layout :: messages}"></div>
+<h1>Order <span th:text="'#' + ${order.id}">#1</span>
+    <span class="status" th:classappend="'status-' + ${order.status}" th:text="${order.status}">PLACED</span></h1>
+<div class="layout-2">
+    <div class="panel">
+        <table>
+            <tr><th>Product</th><th>Price</th><th>Qty</th><th>Total</th></tr>
+            <tr th:each="i : ${order.items}">
+                <td><div class="item-cell">
+                    <img class="thumb" th:src="${i.imageUrl}" th:alt="${i.productName}"
+                         onerror="this.onerror=null;this.src='https://placehold.co/64x64?text=No+Image';">
+                    <span th:text="${i.productName}">Name</span></div></td>
+                <td th:text="${@fmt.rupee(i.price)}">₹0</td>
+                <td th:text="${i.quantity}">1</td>
+                <td th:text="${@fmt.rupee(i.lineTotal)}">₹0</td>
+            </tr>
+        </table>
+    </div>
+    <div class="panel">
+        <h3 style="margin-top:0">Summary</h3>
+        <p class="muted" th:text="'Placed on ' + ${#temporals.format(order.orderDate, 'dd MMM yyyy, hh:mm a')}"></p>
+        <div class="summary-row"><span>Delivery</span>
+            <span th:text="${order.deliveryCharge == 0} ? 'Free' : ${@fmt.rupee(order.deliveryCharge)}">Free</span></div>
+        <div class="summary-row summary-total"><span>Total</span><span th:text="${@fmt.rupee(order.totalAmount)}">₹0</span></div>
+        <p><strong>Payment:</strong> <span th:text="${order.paymentMethod}"></span></p>
+        <p><strong>Deliver to:</strong><br><span th:text="${order.shippingAddress}"></span></p>
+        <form th:action="@{/orders/{id}/cancel(id=${order.id})}" method="post" th:if="${order.status == 'PLACED'}"
+              onsubmit="return confirm('Cancel this order?');">
+            <button class="btn btn-danger" type="submit">Cancel order</button>
+        </form>
+        <p><a th:href="@{/orders}">Back to my orders</a></p>
+    </div>
+</div>
+</main>
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>

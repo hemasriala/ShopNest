@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Contact')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: navbar}"></header>
+<main class="container">
+<div th:replace="~{fragments/layout :: messages}"></div>
+<h1>Contact us</h1>
+<div class="two-col">
+    <form class="panel" th:action="@{/contact}" method="post">
+        <label for="n">Your name</label><input id="n" name="name" required>
+        <label for="e">Email</label><input id="e" type="email" name="email" required>
+        <label for="m">Message</label><textarea id="m" name="message" rows="4" required></textarea>
+        <p><button class="btn" type="submit">Send message</button></p>
+    </form>
+    <div class="panel">
+        <h3>Get in touch</h3>
+        <p>Email: support@shopnest.example</p>
+        <p>Phone: +91 98765 43210</p>
+        <p>Hours: Monday to Saturday, 10 AM to 6 PM</p>
+    </div>
+</div>
+</main>
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>

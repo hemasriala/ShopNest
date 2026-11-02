@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Checkout')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: navbar}"></header>
+<main class="container">
+<div th:replace="~{fragments/layout :: messages}"></div>
+<h1>Checkout</h1>
+<div class="layout-2">
+    <form class="panel" th:action="@{/orders/place}" method="post">
+        <h3 style="margin-top:0">Delivery address</h3>
+        <label for="address">Full address with pincode</label>
+        <textarea id="address" name="address" rows="4" required th:text="${user.address}"></textarea>
+
+        <label for="pay">Payment method</label>
+        <select id="pay" name="paymentMethod">
+            <option value="Cash on Delivery">Cash on Delivery</option>
+            <option value="UPI on Delivery">UPI on Delivery</option>
+        </select>
+        <p><button class="btn" type="submit">Place order</button>
+           <a class="btn btn-outline" th:href="@{/cart}">Back to cart</a></p>
+    </form>
+
+    <div class="panel">
+        <h3 style="margin-top:0">Your items</h3>
+        <div class="summary-row" th:each="item : ${items}">
+            <span th:text="${item.product.name} + ' × ' + ${item.quantity}">Item</span>
+            <span th:text="${@fmt.rupee(item.lineTotal)}">₹0</span>
+        </div>
+        <div class="summary-row"><span>Delivery</span>
+            <span th:text="${delivery == 0} ? 'Free' : ${@fmt.rupee(delivery)}">Free</span></div>
+        <div class="summary-row summary-total"><span>Total</span><span th:text="${@fmt.rupee(total)}">₹0</span></div>
+    </div>
+</div>
+</main>
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>

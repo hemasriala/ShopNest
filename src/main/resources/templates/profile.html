@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('My Profile')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: navbar}"></header>
+<main class="container">
+<div th:replace="~{fragments/layout :: messages}"></div>
+<h1>My profile</h1>
+<div class="two-col">
+    <form class="panel" th:action="@{/profile}" method="post">
+        <h3 style="margin-top:0">Personal details</h3>
+        <label for="name">Full name</label><input id="name" name="name" th:value="${user.name}" required>
+        <label for="email">Email (cannot be changed)</label><input id="email" th:value="${user.email}" readonly>
+        <label for="phone">Phone number</label><input id="phone" name="phone" th:value="${user.phone}" pattern="[0-9]{10}" title="Enter a 10 digit mobile number" required>
+        <label for="address">Delivery address</label><textarea id="address" name="address" rows="3" th:text="${user.address}"></textarea>
+        <p><button class="btn" type="submit">Save changes</button></p>
+    </form>
+
+    <form class="panel" th:action="@{/profile/password}" method="post">
+        <h3 style="margin-top:0">Change password</h3>
+        <label for="cp">Current password</label><input id="cp" type="password" name="currentPassword" required>
+        <label for="np">New password (min 6 characters)</label><input id="np" type="password" name="newPassword" minlength="6" required>
+        <p><button class="btn" type="submit">Update password</button></p>
+    </form>
+</div>
+</main>
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>

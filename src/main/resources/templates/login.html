@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Login')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: navbar}"></header>
+<main class="container">
+<div th:replace="~{fragments/layout :: messages}"></div>
+<div class="form-box panel">
+    <h1>Welcome back</h1>
+    <form th:action="@{/login}" method="post">
+        <label for="email">Email</label><input id="email" type="email" name="email" required>
+        <label for="password">Password</label><input id="password" type="password" name="password" required>
+        <p><button class="btn btn-block" type="submit">Log in</button></p>
+    </form>
+    <p class="muted">New here? <a th:href="@{/register}">Create an account</a></p>
+</div>
+</main>
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>
